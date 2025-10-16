@@ -1,0 +1,29 @@
+# main.tf
+
+provider "aws" {
+  region = "us-east-1" # change as needed
+  accountid
+  access key
+  secret access key
+}
+
+# Optional: Create a security group
+resource "aws_security_group" "ec2_sg" {
+  name        = "allow_ssh"
+  description = "Allow SSH inbound traffic"
+
+
+# EC2 instance
+resource "aws_instance" "coss" {
+  ami           = "ami-0c55b159cbfafe1f0"  # Amazon Linux 2 in us-east-1 (check for latest in your region)
+  instance_type = "t2.micro"
+  key_name      = "your-key-pair-name"     # Replace with your actual key pair name
+
+  vpc_security_group_ids = [aws_security_group.ec2_sg.id]
+
+  count = 10
+
+  tags = {
+    Name = "MyTerraformEC2"
+  }
+}
